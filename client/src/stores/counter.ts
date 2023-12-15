@@ -7,6 +7,8 @@ export const useCounterStore = defineStore('counter', () => {
   function increment() {
     count.value++
   }
-
-  return { count, doubleCount, increment }
+  function setCounter(value: number) {
+    count.value = value
+  }
+  return { count, doubleCount, increment, setCounter }
 })

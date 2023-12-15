@@ -1,41 +1,47 @@
 <script setup lang="ts">
-defineProps<{
-  msg: string
-}>()
+import type { MenuItem } from '@/types/api.types'
+import { ref } from 'vue'
+import { useMenuItemStore } from '@/stores/menuItem'
+
+const isLoading = ref(false)
+const menuItemStore = useMenuItemStore()
+
+const fetchData = async () => {
+  isLoading.value = true
+  try {
+    const response = await fetch('/api')
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const json: { menu: MenuItem[] } = await response.json()
+    menuItemStore.updateMenuItems(json.menu)
+    // json.menu.forEach((item) => {
+    //   menuItemStore.addMenuItem(item)
+    // })
+  } catch (e) {
+    console.error('There has been a problem with your fetch operation:', e)
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
-  <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>. What's next?
-    </h3>
+  <div class="hello">
+    <button @click="fetchData">Click Me!</button>
+    <div v-if="isLoading">Loading...</div>
+    <ul>
+      <li v-for="menuItem in menuItemStore.menuItems" :key="menuItem.id">
+        {{ menuItem.name }}: {{ menuItem.description }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+button {
+  padding: 20px 60px;
+  font-size: 18px;
 }
 </style>
+@/types/api.interfaces
