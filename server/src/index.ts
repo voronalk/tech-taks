@@ -1,10 +1,24 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
+const prisma = new PrismaClient();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+
+app.get("/menus", async (req: Request, res: Response) => {
+  try {
+    const menus = await prisma.menus.findMany();
+    res.json(menus);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving menus." });
+  }
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
