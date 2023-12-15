@@ -6,6 +6,10 @@ import { useMenuItemStore } from '@/stores/menuItem'
 const isLoading = ref(false)
 const menuItemStore = useMenuItemStore()
 
+defineProps({
+  msg: String
+})
+
 const fetchData = async () => {
   isLoading.value = true
   try {
@@ -15,9 +19,6 @@ const fetchData = async () => {
     }
     const json: { menu: MenuItem[] } = await response.json()
     menuItemStore.updateMenuItems(json.menu)
-    // json.menu.forEach((item) => {
-    //   menuItemStore.addMenuItem(item)
-    // })
   } catch (e) {
     console.error('There has been a problem with your fetch operation:', e)
   } finally {
@@ -27,6 +28,7 @@ const fetchData = async () => {
 </script>
 
 <template>
+  <h1>{{ msg }}</h1>
   <div class="hello">
     <button @click="fetchData">Click Me!</button>
     <div v-if="isLoading">Loading...</div>
