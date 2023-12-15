@@ -9,7 +9,13 @@ const port = process.env.PORT || 3000;
 app.get("/", (req: Request, res: Response) => {
   res.json({
     menu: [
-      {},
+      {
+        id: 1,
+        name: "Pizza",
+        price: 10.99,
+        description: "Tasty pizza with tomato sauce and cheese",
+        ingredients: ["Dough", "Tomato Sauce", "Cheese"],
+      },
       {
         id: 2,
         name: "Burger",
