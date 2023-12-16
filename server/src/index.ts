@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 app.get("/menus", async (req: Request, res: Response) => {
   try {
-    const menus = await prisma.menus.findMany();
+    const menus = await prisma.menu.findMany();
     res.json(menus);
   } catch (error) {
     console.error(error);

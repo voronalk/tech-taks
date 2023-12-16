@@ -8,8 +8,9 @@ datasource db {
 }
 
 model menu {
-    id   Int     @id @default(autoincrement())
-    name String? @db.VarChar(255)
+    id    Int     @id @default(autoincrement())
+    name  String? @db.VarChar(255)
+    items item[]
 }
 
 model item {
@@ -17,4 +18,6 @@ model item {
     name        String?  @db.VarChar(255)
     price       Decimal? @db.Decimal(10, 2)
     description String?
+    menuId      Int
+    menu        menu     @relation(fields: [menuId], references: [id])
 }
